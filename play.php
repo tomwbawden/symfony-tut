@@ -17,8 +17,16 @@ $container = $kernel->getContainer();
 $container->enterScope('request');
 $container->set('request', $request);
 
-$templating = $container->get('templating');
-echo $templating->render(
-    'EventBundle:Default:index.html.twig',
-    array('name' => 'Vader', 'count' => 5, )
-);
+use Yoda\EventBundle\Entity\Event;
+
+$event = new Event();
+$event->setName("Darth's surprise birthday event");
+$event->setLocation('Deathstar');
+$event->setTime(new \Datetime('tomorrow noon'));
+//$event->setDetails('Ha! Darth hates surprises');
+
+$em = $container->get('doctrine')->getManager();
+$em->persist($event);
+$em->flush();
+
+
